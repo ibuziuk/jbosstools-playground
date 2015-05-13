@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+	    <propertyTester
+	      	id="org.jboss.tools.playground.bower.tester"
+	      	type="org.eclipse.core.resources.IResource"
+	      	namespace="org.jboss.tools.playground.bower"
+	      	properties="isBowerInit"
+	      	class="org.jboss.tools.playground.bower.internal.launch.tester.BowerTester">
+	    </propertyTester>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            class="org.jboss.tools.playground.bower.internal.launch.shortcut.BowerUpdate"
+            id="org.jboss.tools.playground.bower.update"
+            label="Bower Update"
+            icon="icons/bower_16.png"
+            modes="run">
+        <contextualLaunch>
+            <enablement>
+                <with variable="selection">
+                    <count value="1"/>
+                    <iterate>
+                        <adapt  type="org.eclipse.core.resources.IResource">
+	                        <test property="org.jboss.tools.playground.bower.isBowerInit" 
+	                           	forcePluginActivation="true"/>
+                        </adapt> 
+                    </iterate>
+                </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
+ </extension>
+</plugin>
