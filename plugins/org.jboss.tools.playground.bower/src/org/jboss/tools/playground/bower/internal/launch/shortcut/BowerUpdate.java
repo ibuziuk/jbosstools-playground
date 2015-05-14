@@ -24,17 +24,16 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IEditorPart;
 import org.jboss.tools.playground.bower.internal.Activator;
-import org.jboss.tools.playground.bower.internal.launch.tester.TesterUtil;
-
+import org.jboss.tools.playground.bower.internal.launch.BowerCommands;
+import org.jboss.tools.playground.bower.internal.util.BowerUtil;
 
 /**
  * @author "Ilya Buziuk (ibuziuk)"
  */
+@SuppressWarnings("restriction")
 public class BowerUpdate implements ILaunchShortcut {
-	private static final String BOWER_UPDATE = "Bower Update"; //$NON-NLS-1$
+	private static final String NAME = "Bower Update"; //$NON-NLS-1$
 	private static final String COMMAND = "C:\\Users\\ibuziuk\\AppData\\Roaming\\npm\\bower.cmd"; //$NON-NLS-1$
-	private static final String PARAMETER = "update"; //$NON-NLS-1$
-
 
 	@Override
 	public void launch(ISelection selection, String mode) {
@@ -43,8 +42,8 @@ public class BowerUpdate implements ILaunchShortcut {
 			 if (element != null && element instanceof IResource) {
 				 IProject project = ((IResource) element).getProject();
 				 try {
-					String commandExecutionPath = TesterUtil.getCommandExecutionPath(project);
-					execute(commandExecutionPath);
+					String executionPath = BowerUtil.getExecutionPath(project);
+					execute(executionPath);
 				} catch (CoreException e) {
 					Activator.logError(e);
 				}
@@ -56,15 +55,14 @@ public class BowerUpdate implements ILaunchShortcut {
 	public void launch(IEditorPart editor, String mode) {			
 	}
 	
-	@SuppressWarnings({ "restriction"})
 	private void execute(String commandExecutionPath) throws CoreException {
 		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
 		ILaunchConfigurationType programType = manager.getLaunchConfigurationType(IExternalToolConstants.ID_PROGRAM_LAUNCH_CONFIGURATION_TYPE);
-		ILaunchConfiguration cfg = programType.newInstance(null, BOWER_UPDATE);
+		ILaunchConfiguration cfg = programType.newInstance(null, NAME);
 		ILaunchConfigurationWorkingCopy wc = cfg.getWorkingCopy();
 		wc.setAttribute(IExternalToolConstants.ATTR_LOCATION, COMMAND);
-		wc.setAttribute(IExternalToolConstants.ATTR_WORKING_DIRECTORY, "${workspace_loc:" + commandExecutionPath +"}");
-		wc.setAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, PARAMETER);
+		wc.setAttribute(IExternalToolConstants.ATTR_WORKING_DIRECTORY, "${workspace_loc:" + commandExecutionPath +"}"); //$NON-NLS-1$ //$NON-NLS-2$
+		wc.setAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, BowerCommands.UPDATE.getValue());
 		cfg = wc.doSave();
 		cfg.launch(ILaunchManager.RUN_MODE, null, false, true);
 		cfg.delete();

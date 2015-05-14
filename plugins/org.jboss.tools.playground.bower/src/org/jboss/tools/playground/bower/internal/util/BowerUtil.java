@@ -8,7 +8,7 @@
  * Contributors: 
  * Red Hat, Inc. - initial API and implementation 
  ******************************************************************************/
-package org.jboss.tools.playground.bower.internal.launch.tester;
+package org.jboss.tools.playground.bower.internal.util;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
@@ -18,10 +18,10 @@ import org.eclipse.core.runtime.CoreException;
 /**
  * @author Ilya Buziuk (ibuziuk)
  */
-public final class TesterUtil {
+public final class BowerUtil {
 	private static final String BOWER_JSON = "bower.json"; //$NON-NLS-1$
 
-	private TesterUtil() {
+	private BowerUtil() {
 	}
 
 	public static boolean isBowerInit(final IProject project) throws CoreException {
@@ -35,9 +35,8 @@ public final class TesterUtil {
 		}
 		return false;
 	}
-	
-	
-	public static String getCommandExecutionPath(final IProject project) throws CoreException {
+
+	public static String getExecutionPath(final IProject project) throws CoreException {
 		if (project != null) {
 			IResource[] members = project.members();
 			for (IResource member : members) {

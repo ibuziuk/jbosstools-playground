@@ -14,6 +14,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.jboss.tools.playground.bower.internal.Activator;
+import org.jboss.tools.playground.bower.internal.util.BowerUtil;
 import org.eclipse.core.expressions.PropertyTester;
 
 /**
@@ -30,7 +31,7 @@ public final class BowerTester extends PropertyTester {
 		try {
 			if (IS_BOWER_INIT.equals(property) && receiver instanceof IResource) {
 				IProject project = ((IResource) receiver).getProject();
-				return TesterUtil.isBowerInit(project);
+				return BowerUtil.isBowerInit(project);
 			}
 		} catch (CoreException e) {
 			Activator.logError(e);
