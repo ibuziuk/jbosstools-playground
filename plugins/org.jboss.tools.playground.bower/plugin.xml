@@ -2,6 +2,23 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
+       point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+          id="org.jboss.tools.playground.bower.bowerLaunchConfigurationType"
+          delegate="org.jboss.tools.playground.bower.internal.launch.type.BowerLaunchConfig"
+          modes="run"
+          name="Bower">
+      </launchConfigurationType>
+   </extension>
+    <extension
+       point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+          configTypeID="org.jboss.tools.playground.bower.bowerLaunchConfigurationType"
+          icon="icons/bower_16.png"
+          id="rg.jboss.tools.playground.bower.bowerLaunchConfigurationTypeImage">
+    	</launchConfigurationTypeImage>
+   </extension>
+   <extension
          point="org.eclipse.core.expressions.propertyTesters">
 	    <propertyTester
 	      	id="org.jboss.tools.playground.bower.tester"
@@ -33,5 +50,74 @@
             </enablement>
          </contextualLaunch>
       </shortcut>
- </extension>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            class="org.jboss.tools.playground.bower.internal.launch.shortcut.BowerInit"
+            id="org.jboss.tools.playground.bower.init"
+            label="Bower Init"
+            icon="icons/bower_16.png"
+            modes="run">
+        <contextualLaunch>
+            <enablement>
+                <with variable="selection">
+                    <count value="1"/>
+                    <iterate>
+                        <adapt  type="org.eclipse.core.resources.IResource">
+	                        <test property="org.jboss.tools.playground.bower.isBowerInit" 
+	                           	forcePluginActivation="true"/>
+                        </adapt> 
+                    </iterate>
+                </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
+ 	</extension>
+    <extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            class="org.jboss.tools.playground.bower.internal.launch.shortcut.BowerInstall"
+            id="org.jboss.tools.playground.bower.update"
+            label="Bower Install"
+            icon="icons/bower_16.png"
+            modes="run">
+        <contextualLaunch>
+            <enablement>
+                <with variable="selection">
+                    <count value="1"/>
+                    <iterate>
+                        <adapt  type="org.eclipse.core.resources.IResource">
+	                        <test property="org.jboss.tools.playground.bower.isBowerInit" 
+	                           	forcePluginActivation="true"/>
+                        </adapt> 
+                    </iterate>
+                </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
+ 	</extension>
+ 	<extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            class="org.jboss.tools.playground.bower.internal.launch.shortcut.BowerUninstall"
+            id="org.jboss.tools.playground.bower.uninstall"
+            label="Bower Uninstall"
+            icon="icons/bower_16.png"
+            modes="run">
+        <contextualLaunch>
+            <enablement>
+                <with variable="selection">
+                    <count value="1"/>
+                    <iterate>
+                        <adapt  type="org.eclipse.core.resources.IResource">
+	                        <test property="org.jboss.tools.playground.bower.isBowerInit" 
+	                           	forcePluginActivation="true"/>
+                        </adapt> 
+                    </iterate>
+                </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
+   </extension>
 </plugin>
