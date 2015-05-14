@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.playground.bower.internal.launch.tester;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -33,6 +34,22 @@ public final class TesterUtil {
 			}
 		}
 		return false;
+	}
+	
+	
+	public static String getCommandExecutionPath(final IProject project) throws CoreException {
+		if (project != null) {
+			IResource[] members = project.members();
+			for (IResource member : members) {
+				if (BOWER_JSON.equals(member.getName()) && member.exists()) {
+					IContainer parent = member.getParent();
+					if (parent != null && parent.exists()) {
+						return parent.getFullPath().toOSString();
+					}
+				}
+			}
+		}
+		return null;
 	}
 	
 }
