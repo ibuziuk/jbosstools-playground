@@ -143,4 +143,13 @@
          </contextualLaunch>
       </shortcut>
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.jboss.tools.common.model.ui.MainPreferencePage"
+            class="org.jboss.tools.playground.bower.internal.preferences.BowerPreferencesPage"
+            id="org.jboss.tools.playground.bower.BowerPreferences"
+            name="Bower">
+      </page>
+   </extension>
 </plugin>
