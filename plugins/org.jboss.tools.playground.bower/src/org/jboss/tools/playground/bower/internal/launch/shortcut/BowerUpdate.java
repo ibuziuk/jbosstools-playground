@@ -25,6 +25,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IEditorPart;
 import org.jboss.tools.playground.bower.internal.Activator;
 import org.jboss.tools.playground.bower.internal.launch.BowerCommands;
+import org.jboss.tools.playground.bower.internal.preferences.BowerPreferencesHolder;
 import org.jboss.tools.playground.bower.internal.util.BowerUtil;
 
 /**
@@ -33,7 +34,6 @@ import org.jboss.tools.playground.bower.internal.util.BowerUtil;
 @SuppressWarnings("restriction")
 public class BowerUpdate implements ILaunchShortcut {
 	private static final String NAME = "Bower Update"; //$NON-NLS-1$
-	private static final String COMMAND = "C:\\Users\\ibuziuk\\AppData\\Roaming\\npm\\bower.cmd"; //$NON-NLS-1$
 
 	@Override
 	public void launch(ISelection selection, String mode) {
@@ -60,7 +60,7 @@ public class BowerUpdate implements ILaunchShortcut {
 		ILaunchConfigurationType programType = manager.getLaunchConfigurationType(IExternalToolConstants.ID_PROGRAM_LAUNCH_CONFIGURATION_TYPE);
 		ILaunchConfiguration cfg = programType.newInstance(null, NAME);
 		ILaunchConfigurationWorkingCopy wc = cfg.getWorkingCopy();
-		wc.setAttribute(IExternalToolConstants.ATTR_LOCATION, COMMAND);
+		wc.setAttribute(IExternalToolConstants.ATTR_LOCATION, BowerPreferencesHolder.getBowerExecutableLocation());
 		wc.setAttribute(IExternalToolConstants.ATTR_WORKING_DIRECTORY, "${workspace_loc:" + commandExecutionPath +"}"); //$NON-NLS-1$ //$NON-NLS-2$
 		wc.setAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, BowerCommands.UPDATE.getValue());
 		cfg = wc.doSave();

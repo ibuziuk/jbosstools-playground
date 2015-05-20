@@ -14,12 +14,12 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.jboss.tools.playground.bower.internal.BowerConstants;
 
 /**
  * @author Ilya Buziuk (ibuziuk)
  */
 public final class BowerUtil {
-	private static final String BOWER_JSON = "bower.json"; //$NON-NLS-1$
 
 	private BowerUtil() {
 	}
@@ -28,7 +28,7 @@ public final class BowerUtil {
 		if (project != null) {
 			IResource[] members = project.members(); 
 			for (IResource member : members) {
-				if (BOWER_JSON.equals(member.getName()) && member.exists()) {
+				if (BowerConstants.BOWER_JSON.equals(member.getName()) && member.exists()) {
 					return true;
 				}
 			}
@@ -40,7 +40,7 @@ public final class BowerUtil {
 		if (project != null) {
 			IResource[] members = project.members();
 			for (IResource member : members) {
-				if (BOWER_JSON.equals(member.getName()) && member.exists()) {
+				if (BowerConstants.BOWER_JSON.equals(member.getName()) && member.exists()) {
 					IContainer parent = member.getParent();
 					if (parent != null && parent.exists()) {
 						return parent.getFullPath().toOSString();

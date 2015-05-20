@@ -8,24 +8,21 @@
  *  Contributors:
  *       Red Hat, Inc. - initial API and implementation
  *******************************************************************************/
-package org.jboss.tools.playground.bower.internal.launch.shortcut;
+package org.jboss.tools.playground.bower.internal.preferences;
 
-import org.eclipse.debug.ui.ILaunchShortcut;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.ui.IEditorPart;
+import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.jboss.tools.playground.bower.internal.Activator;
 
 /**
  * @author "Ilya Buziuk (ibuziuk)"
  */
-public class BowerInstall implements ILaunchShortcut {
+public class BowerPreferenceInitializer extends AbstractPreferenceInitializer {
 
 	@Override
-	public void launch(ISelection selection, String mode) {
-		throw new UnsupportedOperationException();
+	public void initializeDefaultPreferences() {
+		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+		store.setDefault(BowerPreferencesHolder.PREF_NODE_LOCATION, ""); //$NON-NLS-1$
 	}
 
-	@Override
-	public void launch(IEditorPart editor, String mode) {			
-	}
-	 
 }

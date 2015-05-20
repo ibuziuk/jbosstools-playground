@@ -8,24 +8,19 @@
  *  Contributors:
  *       Red Hat, Inc. - initial API and implementation
  *******************************************************************************/
-package org.jboss.tools.playground.bower.internal.launch.shortcut;
-
-import org.eclipse.debug.ui.ILaunchShortcut;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.ui.IEditorPart;
+package org.jboss.tools.playground.bower.internal;
 
 /**
  * @author "Ilya Buziuk (ibuziuk)"
  */
-public class BowerUninstall implements ILaunchShortcut {
+public final class BowerConstants {
 
-	@Override
-	public void launch(ISelection selection, String mode) {
-		throw new UnsupportedOperationException();
+	private BowerConstants() {
 	}
 
-	@Override
-	public void launch(IEditorPart editor, String mode) {			
-	}
-	
+	public static final String BOWER = "bower"; //$NON-NLS-1$
+	public static final String BOWER_CMD = "bower.cmd"; //$NON-NLS-1$
+	public static final String BOWER_JSON = "bower.json"; //$NON-NLS-1$
+	public static final String NODE_MODULES = "node_modules"; //$NON-NLS-1$
+
 }

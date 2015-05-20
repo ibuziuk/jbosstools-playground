@@ -73,75 +73,6 @@
             </enablement>
          </contextualLaunch>
       </shortcut>
- 	</extension>
-    <extension
-         point="org.eclipse.debug.ui.launchShortcuts">
-      <shortcut
-            class="org.jboss.tools.playground.bower.internal.launch.shortcut.BowerInstall"
-            id="org.jboss.tools.playground.bower.update"
-            label="Bower Install"
-            icon="icons/bower_16.png"
-            modes="run">
-        <contextualLaunch>
-            <enablement>
-                <with variable="selection">
-                    <count value="1"/>
-                    <iterate>
-                        <adapt  type="org.eclipse.core.resources.IResource">
-	                        <test property="org.jboss.tools.playground.bower.isBowerInit" 
-	                           	forcePluginActivation="true"/>
-                        </adapt> 
-                    </iterate>
-                </with>
-            </enablement>
-         </contextualLaunch>
-      </shortcut>
- 	</extension>
- 	<extension
-         point="org.eclipse.debug.ui.launchShortcuts">
-      <shortcut
-            class="org.jboss.tools.playground.bower.internal.launch.shortcut.BowerUninstall"
-            id="org.jboss.tools.playground.bower.uninstall"
-            label="Bower Uninstall"
-            icon="icons/bower_16.png"
-            modes="run">
-        <contextualLaunch>
-            <enablement>
-                <with variable="selection">
-                    <count value="1"/>
-                    <iterate>
-                        <adapt  type="org.eclipse.core.resources.IResource">
-	                        <test property="org.jboss.tools.playground.bower.isBowerInit" 
-	                           	forcePluginActivation="true"/>
-                        </adapt> 
-                    </iterate>
-                </with>
-            </enablement>
-         </contextualLaunch>
-      </shortcut>
-   </extension>
-   <extension
-         point="org.eclipse.debug.ui.launchShortcuts">
-      <shortcut
-            class="org.jboss.tools.playground.bower.internal.launch.shortcut.GitTerminal"
-            id="org.jboss.tools.playground.git.terminal"
-            label="Git Terminal"
-            icon="icons/git_16.png"
-            modes="run">
-        <contextualLaunch>
-            <enablement>
-                <with variable="selection">
-                    <count value="1"/>
-                    <iterate>
-                        <adapt  type="org.eclipse.core.resources.IResource">
-	                        <test property="org.jboss.tools.playground.bower.isBowerInit" 
-	                           	forcePluginActivation="true"/>
-                        </adapt> 
-                    </iterate>
-                </with>
-            </enablement>
-         </contextualLaunch>
-      </shortcut>
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
@@ -152,4 +83,10 @@
             name="Bower">
       </page>
    </extension>
+   <extension
+      point="org.eclipse.core.runtime.preferences">
+	   <initializer
+	         class="org.jboss.tools.playground.bower.internal.preferences.BowerPreferenceInitializer">
+	   </initializer>
+	</extension>
 </plugin>
