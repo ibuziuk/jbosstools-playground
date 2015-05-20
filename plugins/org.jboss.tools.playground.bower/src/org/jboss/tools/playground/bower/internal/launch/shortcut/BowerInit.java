@@ -10,22 +10,31 @@
  *******************************************************************************/
 package org.jboss.tools.playground.bower.internal.launch.shortcut;
 
-import org.eclipse.debug.ui.ILaunchShortcut;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.ui.IEditorPart;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
+import org.jboss.tools.playground.bower.internal.launch.BowerCommands;
 
 /**
  * @author "Ilya Buziuk (ibuziuk)"
  */
-public class BowerInit implements ILaunchShortcut {
-
+public class BowerInit extends GenericBowerLaunch {
+	private static final String LAUNCH_NAME = "Bower Init"; //$NON-NLS-1$
+	
 	@Override
-	public void launch(ISelection selection, String mode) {
-		throw new UnsupportedOperationException();
+	protected String getCommandArguments() {
+		return BowerCommands.INIT.getValue(); 
 	}
 
 	@Override
-	public void launch(IEditorPart editor, String mode) {			
+	protected String getLaunchName() {
+		return LAUNCH_NAME;
 	}
-	 
+
+	@Override
+	protected String getWorkingDirectory(IResource resource) throws CoreException {
+		if (resource != null && resource.exists()) {
+			return resource.getFullPath().toOSString();
+		}
+		return null;
+	}
 }

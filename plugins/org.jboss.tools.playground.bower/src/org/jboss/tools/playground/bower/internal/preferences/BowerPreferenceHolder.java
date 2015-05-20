@@ -19,19 +19,19 @@ import org.jboss.tools.playground.bower.internal.BowerConstants;
 /**
  * @author "Ilya Buziuk (ibuziuk)"
  */
-public class BowerPreferencesHolder {
-	public static final String PREF_NODE_LOCATION = "Node_Location"; //$NON-NLS-1$
+public class BowerPreferenceHolder {
+	public static final String PREF_NPM_LOCATION = "Pref_npm_Location"; //$NON-NLS-1$
 
 	public static String getNodeLocation() {
-		return getBowerPreferences().getString(PREF_NODE_LOCATION);
+		return getBowerPreferences().getString(PREF_NPM_LOCATION);
 	}
 
 	public static void setNodeLocation(String location) {
-		getBowerPreferences().setValue(PREF_NODE_LOCATION, location);
+		getBowerPreferences().setValue(PREF_NPM_LOCATION, location);
 	}
 
 	public static String getBowerExecutableLocation() {
-		File bowerExecutable = new File(getBowerPreferences().getString(PREF_NODE_LOCATION), BowerConstants.BOWER_CMD);
+		File bowerExecutable = new File(getBowerPreferences().getString(PREF_NPM_LOCATION), BowerConstants.BOWER_CMD);
 		if (bowerExecutable != null && bowerExecutable.exists()) {
 			return bowerExecutable.getAbsolutePath();
 		}

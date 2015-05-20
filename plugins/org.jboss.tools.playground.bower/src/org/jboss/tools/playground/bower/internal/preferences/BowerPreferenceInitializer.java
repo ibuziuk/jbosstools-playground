@@ -22,7 +22,7 @@ public class BowerPreferenceInitializer extends AbstractPreferenceInitializer {
 	@Override
 	public void initializeDefaultPreferences() {
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		store.setDefault(BowerPreferencesHolder.PREF_NODE_LOCATION, ""); //$NON-NLS-1$
+		store.setDefault(BowerPreferenceHolder.PREF_NPM_LOCATION, ""); //$NON-NLS-1$
 	}
 
 }

@@ -15,7 +15,6 @@ import java.io.File;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
@@ -25,35 +24,35 @@ import org.jboss.tools.playground.bower.internal.BowerConstants;
 /**
  * @author "Ilya Buziuk (ibuziuk)"
  */
-public class BowerPreferencesPage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public class BowerPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 	public static final String PAGE_ID = "org.jboss.tools.playground.bower.internal.preferences.BowerPreferencesPage"; //$NON-NLS-1$
-	private String nodeLocation;
+	private BowerHomeFieldEditor bowerEditor;
 	
-	public BowerPreferencesPage() {
+	public BowerPreferencePage() {
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("Node settings for bower support");
+		setDescription("npm Settings for Bower Support"); //$NON-NLS-1$
 	}
 	
-
 	@Override
 	public void init(IWorkbench workbench) {
 	}
 	
 	@Override
 	public boolean performOk() {
-		BowerPreferencesHolder.setNodeLocation(nodeLocation);
+		super.performOk();
+		String filePath = bowerEditor.getTextControl(getFieldEditorParent()).getText();
+		BowerPreferenceHolder.setNodeLocation(new File(filePath.trim()).getAbsolutePath());
 		return true;
 	}
 
 	@Override
 	protected void createFieldEditors() {
-		BowerHomeFieldEditor editor = new BowerHomeFieldEditor("Node Home", "Node", getFieldEditorParent());
-		addField(editor);
+		bowerEditor = new BowerHomeFieldEditor("npm Home", "npm Location", getFieldEditorParent()); //$NON-NLS-1$ //$NON-NLS-2$
+		addField(bowerEditor);
 	}
 	
 	private static class BowerHomeFieldEditor extends DirectoryFieldEditor {
-		public String nodeLocation;
 		
 		public BowerHomeFieldEditor(String key, String label, Composite composite) {
 			super(key, label, composite);
@@ -65,7 +64,7 @@ public class BowerPreferencesPage extends FieldEditorPreferencePage implements I
 			String filename = getTextControl().getText();
 			filename = filename.trim();
 			if (filename.isEmpty()) {
-				this.getPage().setMessage("A location for the Node must be specified", IStatus.WARNING);
+				this.getPage().setMessage("A location for the npm must be specified", IStatus.WARNING); //$NON-NLS-1$
 				return true;
 			} else {
 				// clear the warning message
@@ -76,18 +75,18 @@ public class BowerPreferencesPage extends FieldEditorPreferencePage implements I
 				filename = filename + File.separator;
 			}
 			
-			File file = new File(filename);
-			if (!file.isDirectory()){
-				setErrorMessage("A directory must be specified"); //$NON-NLS-1$
+			File selectedFile = new File(filename);
+			File nodeModules = new File(selectedFile, BowerConstants.NODE_MODULES);
+			if (nodeModules == null || !nodeModules.exists()) {
+				setErrorMessage("Not valid npm location"); //$NON-NLS-1$
 				return false;
 			}
 			
-			File bower = new File(file, BowerConstants.BOWER_CMD);
+			File bower = new File(selectedFile, BowerConstants.BOWER);
 			if (bower == null || !bower.exists()) {
-				setErrorMessage("bower must be installed");
+				setErrorMessage("bower must be installed. Visit <a href='http://bower.io/docs/api/'>http://bower.io/docs/api/</a>"); //$NON-NLS-1$
 				return false;
 			}
-			this.nodeLocation = file.getAbsolutePath();
 			return true;
 		}
 		

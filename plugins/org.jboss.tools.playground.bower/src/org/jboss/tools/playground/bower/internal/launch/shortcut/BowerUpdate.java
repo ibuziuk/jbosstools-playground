@@ -10,62 +10,44 @@
  *******************************************************************************/
 package org.jboss.tools.playground.bower.internal.launch.shortcut;
 
-import org.eclipse.core.externaltools.internal.IExternalToolConstants;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchConfigurationType;
-import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.debug.ui.ILaunchShortcut;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.IEditorPart;
-import org.jboss.tools.playground.bower.internal.Activator;
+import org.jboss.tools.playground.bower.internal.BowerConstants;
 import org.jboss.tools.playground.bower.internal.launch.BowerCommands;
-import org.jboss.tools.playground.bower.internal.preferences.BowerPreferencesHolder;
-import org.jboss.tools.playground.bower.internal.util.BowerUtil;
 
 /**
  * @author "Ilya Buziuk (ibuziuk)"
  */
-@SuppressWarnings("restriction")
-public class BowerUpdate implements ILaunchShortcut {
-	private static final String NAME = "Bower Update"; //$NON-NLS-1$
+public class BowerUpdate extends GenericBowerLaunch {
+	private static final String LAUNCH_NAME = "Bower Update"; //$NON-NLS-1$
 
 	@Override
-	public void launch(ISelection selection, String mode) {
-		if (selection instanceof IStructuredSelection) {
-			 Object element = ((IStructuredSelection)selection).getFirstElement();
-			 if (element != null && element instanceof IResource) {
-				 IProject project = ((IResource) element).getProject();
-				 try {
-					String executionPath = BowerUtil.getExecutionPath(project);
-					execute(executionPath);
-				} catch (CoreException e) {
-					Activator.logError(e);
+	protected String getCommandArguments() {
+		return BowerCommands.UPDATE.getValue();
+	}
+
+	@Override
+	protected String getLaunchName() {
+		return LAUNCH_NAME;
+	}
+
+	@Override
+	protected String getWorkingDirectory(IResource resource) throws CoreException {
+		if (resource != null && resource.exists()) {
+			IProject project = resource.getProject();
+			IResource[] members = project.members();
+			for (IResource member : members) {
+				if (BowerConstants.BOWER_JSON.equals(member.getName()) && member.exists()) {
+					IContainer parent = member.getParent();
+					if (parent != null && parent.exists()) {
+						return parent.getFullPath().toOSString();
+					}
 				}
-			 }
+			}
 		}
+		return null;
 	}
 
-	@Override
-	public void launch(IEditorPart editor, String mode) {			
-	}
-	
-	private void execute(String commandExecutionPath) throws CoreException {
-		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
-		ILaunchConfigurationType programType = manager.getLaunchConfigurationType(IExternalToolConstants.ID_PROGRAM_LAUNCH_CONFIGURATION_TYPE);
-		ILaunchConfiguration cfg = programType.newInstance(null, NAME);
-		ILaunchConfigurationWorkingCopy wc = cfg.getWorkingCopy();
-		wc.setAttribute(IExternalToolConstants.ATTR_LOCATION, BowerPreferencesHolder.getBowerExecutableLocation());
-		wc.setAttribute(IExternalToolConstants.ATTR_WORKING_DIRECTORY, "${workspace_loc:" + commandExecutionPath +"}"); //$NON-NLS-1$ //$NON-NLS-2$
-		wc.setAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, BowerCommands.UPDATE.getValue());
-		cfg = wc.doSave();
-		cfg.launch(ILaunchManager.RUN_MODE, null, false, true);
-		cfg.delete();
-	}
-	 
 }
